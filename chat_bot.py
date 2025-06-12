@@ -120,6 +120,7 @@ def getprecautionDict():
 
 
 def getInfo():
+    global name
     print("-----------------------------------HealthCare ChatBot-----------------------------------")
     print("\nYour Name? \t\t\t\t",end="->")
     name=input("")
@@ -200,17 +201,17 @@ def tree_to_code(tree, feature_names):
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
-            name = feature_name[node]
+            feat_name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            if name == disease_input:
+            if feat_name == disease_input:
                 val = 1
             else:
                 val = 0
             if  val <= threshold:
                 recurse(tree_.children_left[node], depth + 1)
             else:
-                symptoms_present.append(name)
+                symptoms_present.append(feat_name)
                 recurse(tree_.children_right[node], depth + 1)
         else:
             present_disease = print_disease(tree_.value[node])
@@ -239,22 +240,24 @@ def tree_to_code(tree, feature_names):
             # print(second_prediction)
             calc_condition(symptoms_exp,num_days)
             if(present_disease[0]==second_prediction[0]):
-                print("You may have ", present_disease[0])
+                print(f"{name}, based on your symptoms, you may have {present_disease[0]}")
                 print(description_list[present_disease[0]])
 
                 # readn(f"You may have {present_disease[0]}")
                 # readn(f"{description_list[present_disease[0]]}")
 
             else:
-                print("You may have ", present_disease[0], "or ", second_prediction[0])
+                print(f"{name}, you may have either {present_disease[0]} or {second_prediction[0]}")
                 print(description_list[present_disease[0]])
                 print(description_list[second_prediction[0]])
 
             # print(description_list[present_disease[0]])
             precution_list=precautionDictionary[present_disease[0]]
-            print("Take following measures : ")
+            print(f"Take care, {name}. Here's what you can do:")
+
             for  i,j in enumerate(precution_list):
                 print(i+1,")",j)
+            print(f"Hope you feel better soon, {name}! ❤️")
 
             # confidence_level = (1.0*len(symptoms_present))/len(symptoms_given)
             # print("confidence level is " + str(confidence_level))
